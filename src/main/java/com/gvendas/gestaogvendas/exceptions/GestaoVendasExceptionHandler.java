@@ -1,5 +1,6 @@
 package com.gvendas.gestaogvendas.exceptions;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -7,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -27,6 +29,16 @@ public class GestaoVendasExceptionHandler extends ResponseEntityExceptionHandler
     List<ErrorHandler> errors = listOfErrors(ex.getBindingResult());
 
     return handleExceptionInternal(ex, errors, headers, HttpStatus.BAD_REQUEST, request);
+  }
+
+  @ExceptionHandler(EmptyResultDataAccessException.class)
+  public ResponseEntity<Object> handleEmptyResultDataAccessException(
+      EmptyResultDataAccessException ex, WebRequest request) {
+    String userMessage = "Recurso não encontrado";
+    String developerMessage = ex.toString();
+    List<ErrorHandler> errors = List.of(new ErrorHandler(userMessage, developerMessage));
+    return handleExceptionInternal(ex, errors, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+
   }
 
   private List<ErrorHandler> listOfErrors(BindingResult bindingResult) {
