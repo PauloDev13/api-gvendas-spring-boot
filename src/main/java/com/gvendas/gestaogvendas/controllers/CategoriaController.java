@@ -29,8 +29,14 @@ public class CategoriaController {
     return categoria.isPresent() ? ResponseEntity.ok(categoria) : ResponseEntity.notFound().build();
   }
 
-  @PostMapping
+  @PutMapping
   public ResponseEntity<Categoria> save(@RequestBody() Categoria categoria) {
     return ResponseEntity.status(HttpStatus.CREATED).body(categoriaService.save(categoria));
   }
+
+  @PatchMapping("/{codigo}")
+  public ResponseEntity<Categoria> update(@PathVariable Long codigo, @RequestBody Categoria categoria) {
+    return ResponseEntity.ok(categoriaService.update(codigo, categoria));
+  }
+
 }

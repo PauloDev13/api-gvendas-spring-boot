@@ -2,6 +2,8 @@ package com.gvendas.gestaogvendas.services;
 
 import com.gvendas.gestaogvendas.entities.Categoria;
 import com.gvendas.gestaogvendas.repositories.CategoriaRepository;
+import org.springframework.beans.BeanUtils;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,5 +27,20 @@ public class CategoriaService {
 
   public Categoria save(Categoria categoria) {
     return categoriaRepository.save(categoria);
+  }
+
+  public Categoria update(Long codigo, Categoria categoria) {
+    Categoria categoriaSaved = validCategoria(codigo);
+    BeanUtils.copyProperties(categoria, categoriaSaved, "codigo");
+    return categoriaRepository.save(categoriaSaved);
+  }
+
+  private Categoria validCategoria(Long id) {
+    Optional<Categoria> categoria = findById(id);
+
+    if (categoria.isEmpty()) {
+      throw new EmptyResultDataAccessException(1);
+    }
+    return categoria.get();
   }
 }
