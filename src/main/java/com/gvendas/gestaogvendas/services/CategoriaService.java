@@ -35,6 +35,10 @@ public class CategoriaService {
     return categoriaRepository.save(categoriaSaved);
   }
 
+  public void delete(Long codigo) {
+    categoriaRepository.deleteById(codigo);
+  }
+
   private Categoria validCategoria(Long id) {
     Optional<Categoria> categoria = findById(id);
 

@@ -47,4 +47,11 @@ public class CategoriaController {
     return ResponseEntity.ok(categoriaService.update(codigo, categoria));
   }
 
+  @ApiOperation(value = "Exclui um único registro de categoria fornecido seu código")
+  @DeleteMapping("/{codigo}")
+  public ResponseEntity<Void> delete(@PathVariable Long codigo) {
+    categoriaService.delete(codigo);
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+  }
+
 }
