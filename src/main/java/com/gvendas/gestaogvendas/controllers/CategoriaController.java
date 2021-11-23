@@ -12,9 +12,9 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
-@Api(tags = "Categoria")
 @RestController
 @RequestMapping("/categorias")
+@Api(tags = "Categoria")
 public class CategoriaController {
   private final CategoriaService categoriaService;
 
@@ -22,26 +22,26 @@ public class CategoriaController {
     this.categoriaService = categoriaService;
   }
 
-  @ApiOperation(value = "ListAll")
+  @ApiOperation(value = "Lista todos os registros de categorias")
   @GetMapping
   public List<Categoria> listAll() {
     return categoriaService.listAll();
   }
 
-  @ApiOperation(value = "FindById")
+  @ApiOperation(value = "Busca um único registro de categoria fornecido seu código")
   @GetMapping("/{codigo}")
   public ResponseEntity<Optional<Categoria>> findById(@PathVariable Long codigo) {
     Optional<Categoria> categoria = categoriaService.findById(codigo);
     return categoria.isPresent() ? ResponseEntity.ok(categoria) : ResponseEntity.notFound().build();
   }
 
-  @ApiOperation(value = "Save")
+  @ApiOperation(value = "Insere um registro de categoria")
   @PostMapping
   public ResponseEntity<Categoria> save(@Valid @RequestBody() Categoria categoria) {
     return ResponseEntity.status(HttpStatus.CREATED).body(categoriaService.save(categoria));
   }
 
-  @ApiOperation(value = "Update")
+  @ApiOperation(value = "Atualiza um único registro de categoria fornecido seu código")
   @PutMapping("/{codigo}")
   public ResponseEntity<Categoria> update(@PathVariable Long codigo, @Valid @RequestBody Categoria categoria) {
     return ResponseEntity.ok(categoriaService.update(codigo, categoria));
