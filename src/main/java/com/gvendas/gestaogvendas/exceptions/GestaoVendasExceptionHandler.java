@@ -21,6 +21,7 @@ import java.util.Objects;
 public class GestaoVendasExceptionHandler extends ResponseEntityExceptionHandler {
 
   public static final String CONSTANT_VALIDATION_NOT_BLANK = "NotBlank";
+  public static final String CONSTANT_VALIDATION_NOT_NULL = "NotNull";
   public static final String CONSTANT_VALIDATION_LENGTH = "Length";
 
   @Override
@@ -81,6 +82,10 @@ public class GestaoVendasExceptionHandler extends ResponseEntityExceptionHandler
       return Objects.requireNonNull(fieldError.getDefaultMessage()).concat(
           String.format(" deve ter entre %s e %s caracteres",
           Objects.requireNonNull(fieldError.getArguments())[2], fieldError.getArguments()[1]));
+    }
+
+    if (Objects.equals(fieldError.getCode(), CONSTANT_VALIDATION_NOT_NULL)) {
+      return Objects.requireNonNull(fieldError.getDefaultMessage()).concat(" é obrigatório");
     }
     return fieldError.toString();
   }
