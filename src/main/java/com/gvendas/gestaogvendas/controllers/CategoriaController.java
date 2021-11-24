@@ -22,32 +22,35 @@ public class CategoriaController {
     this.categoriaService = categoriaService;
   }
 
-  @ApiOperation(value = "Lista todos os registros de categorias")
+  @ApiOperation(value = "Lista todos os registros de categorias", nickname = "listarTodas")
   @GetMapping
   public List<Categoria> listAll() {
     return categoriaService.listAll();
   }
 
-  @ApiOperation(value = "Busca um único registro de categoria fornecido seu código")
+  @ApiOperation(value = "Busca um único registro de categoria fornecido seu código", nickname = "buscarPorCodigo")
   @GetMapping("/{codigo}")
   public ResponseEntity<Optional<Categoria>> findById(@PathVariable Long codigo) {
     Optional<Categoria> categoria = categoriaService.findById(codigo);
     return categoria.isPresent() ? ResponseEntity.ok(categoria) : ResponseEntity.notFound().build();
   }
 
-  @ApiOperation(value = "Insere um registro de categoria")
+  @ApiOperation(value = "Insere um registro de categoria", nickname = "salvar")
   @PostMapping
   public ResponseEntity<Categoria> save(@Valid @RequestBody() Categoria categoria) {
     return ResponseEntity.status(HttpStatus.CREATED).body(categoriaService.save(categoria));
   }
 
-  @ApiOperation(value = "Atualiza um único registro de categoria fornecido seu código")
+  @ApiOperation(
+      value = "Atualiza um único registro de categoria fornecido seu código",
+      nickname = "atualizar"
+  )
   @PutMapping("/{codigo}")
   public ResponseEntity<Categoria> update(@PathVariable Long codigo, @Valid @RequestBody Categoria categoria) {
     return ResponseEntity.ok(categoriaService.update(codigo, categoria));
   }
 
-  @ApiOperation(value = "Exclui um único registro de categoria fornecido seu código")
+  @ApiOperation(value = "Exclui um único registro de categoria fornecido seu código",nickname = "excluir")
   @DeleteMapping("/{codigo}")
   public ResponseEntity<Void> delete(@PathVariable Long codigo) {
     categoriaService.delete(codigo);
