@@ -22,20 +22,20 @@ public class CategoriaController {
     this.categoriaService = categoriaService;
   }
 
-  @ApiOperation(value = "Lista todos os registros de categorias", nickname = "listarTodas")
+  @ApiOperation(value = "Lista todos os registros de categorias", nickname = "todasCategorias")
   @GetMapping
   public List<Categoria> listAll() {
     return categoriaService.listAll();
   }
 
-  @ApiOperation(value = "Busca um único registro de categoria fornecido seu código", nickname = "buscarPorCodigo")
+  @ApiOperation(value = "Busca um único registro de categoria fornecido seu código", nickname = "categoriaPorCodigo")
   @GetMapping("/{codigo}")
   public ResponseEntity<Optional<Categoria>> findById(@PathVariable Long codigo) {
     Optional<Categoria> categoria = categoriaService.findById(codigo);
     return categoria.isPresent() ? ResponseEntity.ok(categoria) : ResponseEntity.notFound().build();
   }
 
-  @ApiOperation(value = "Insere um registro de categoria", nickname = "salvar")
+  @ApiOperation(value = "Insere um registro de categoria", nickname = "salvaCategoria")
   @PostMapping
   public ResponseEntity<Categoria> save(@Valid @RequestBody() Categoria categoria) {
     return ResponseEntity.status(HttpStatus.CREATED).body(categoriaService.save(categoria));
@@ -43,14 +43,14 @@ public class CategoriaController {
 
   @ApiOperation(
       value = "Atualiza um único registro de categoria fornecido seu código",
-      nickname = "atualizar"
+      nickname = "atualizaCategoria"
   )
   @PutMapping("/{codigo}")
   public ResponseEntity<Categoria> update(@PathVariable Long codigo, @Valid @RequestBody Categoria categoria) {
     return ResponseEntity.ok(categoriaService.update(codigo, categoria));
   }
 
-  @ApiOperation(value = "Exclui um único registro de categoria fornecido seu código",nickname = "excluir")
+  @ApiOperation(value = "Exclui um único registro de categoria fornecido seu código",nickname = "excluiCategoria")
   @DeleteMapping("/{codigo}")
   public ResponseEntity<Void> delete(@PathVariable Long codigo) {
     categoriaService.delete(codigo);

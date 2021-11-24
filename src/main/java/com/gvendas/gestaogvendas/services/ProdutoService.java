@@ -27,10 +27,9 @@ public class ProdutoService {
     return produtoRepository.findByCodigo(codigo, codigoCategoria);
   }
 
-//  public Produto save(Produto categoria) {
-//    ValidateDuplicateCategory(categoria);
-//    return categoriaRepository.save(categoria);
-//  }
+  public Produto save(Produto produto) {
+    return produtoRepository.save(produto);
+  }
 //
 //  public Produto update(Long codigo, Produto categoria) {
 //    Produto categoriaSaved = validateCategory(codigo);

@@ -24,7 +24,7 @@ public class ProdutoController {
 
   @ApiOperation(
       value = "Lista todos os registros de produtos pelo código da sua Categoria",
-      nickname = "ListarTodos "
+      nickname = "todosProdutos "
   )
   @GetMapping
   public List<Produto> listProductsByCategory(@PathVariable Long codigoCategoria) {
@@ -33,7 +33,7 @@ public class ProdutoController {
 
   @ApiOperation(
       value = "Busca um único registro de produto pelo seu código e o código da sua Categoria",
-      nickname = "BuscarPorCodigo"
+      nickname = "produtoPorCodigo"
   )
   @GetMapping("/{codigo}")
   public ResponseEntity<Optional<Produto>> findById(@PathVariable Long codigo, @PathVariable Long codigoCategoria) {
@@ -41,11 +41,11 @@ public class ProdutoController {
     return produto.isPresent() ? ResponseEntity.ok(produto) : ResponseEntity.notFound().build();
   }
 
-//  @ApiOperation(value = "Insere um registro de categoria")
-//  @PostMapping
-//  public ResponseEntity<Categoria> save(@Valid @RequestBody() Categoria categoria) {
-//    return ResponseEntity.status(HttpStatus.CREATED).body(categoriaService.save(categoria));
-//  }
+  @ApiOperation(value = "Insere um registro de produto", nickname="salvaProduto")
+  @PostMapping
+  public ResponseEntity<Produto> save(@RequestBody() Produto produto) {
+    return ResponseEntity.status(HttpStatus.CREATED).body(produtoService.save(produto));
+  }
 //
 //  @ApiOperation(value = "Atualiza um único registro de categoria fornecido seu código")
 //  @PutMapping("/{codigo}")
