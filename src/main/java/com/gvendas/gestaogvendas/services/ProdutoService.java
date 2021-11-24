@@ -1,22 +1,21 @@
 package com.gvendas.gestaogvendas.services;
 
 import com.gvendas.gestaogvendas.entities.Produto;
-import com.gvendas.gestaogvendas.exceptions.DuplicateCategoryException;
+import com.gvendas.gestaogvendas.exceptions.BusinessRulesException;
 import com.gvendas.gestaogvendas.repositories.ProdutoRepository;
-import org.springframework.beans.BeanUtils;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
 public class ProdutoService {
   private final ProdutoRepository produtoRepository;
+  private final CategoriaService categoriaService;
 
-  public ProdutoService(ProdutoRepository produtoRepository) {
+  public ProdutoService(ProdutoRepository produtoRepository, CategoriaService categoriaService) {
     this.produtoRepository = produtoRepository;
+    this.categoriaService = categoriaService;
   }
 
   public List<Produto> listProductsByCategory(Long codigo) {
@@ -28,6 +27,8 @@ public class ProdutoService {
   }
 
   public Produto save(Produto produto) {
+    validateIfCategoryExists(produto.getCategoria().getCodigo());
+    validateDuplicateProduct(produto);
     return produtoRepository.save(produto);
   }
 //
@@ -42,20 +43,22 @@ public class ProdutoService {
 //    categoriaRepository.deleteById(codigo);
 //  }
 //
-//  private Produto validateCategory(Long id) {
-//    Optional<Produto> categoria = findById(id);
-//
-//    if (categoria.isEmpty()) {
-//      throw new EmptyResultDataAccessException(1);
-//    }
-//    return categoria.get();
-//  }
-//
-//  private void ValidateDuplicateCategory(Produto categoria) {
-//    Produto categoriaFind = categoriaRepository.findByNome(categoria.getNome());
-//
-//    if(categoriaFind != null && !Objects.equals(categoriaFind.getCodigo(), categoria.getCodigo())) {
-//      throw new DuplicateCategoryException(String.format("A categoria %s já existe", categoria.getNome().toUpperCase()));
-//    }
-//  }
+  private void validateIfCategoryExists(Long codigoCategoria) {
+    if (codigoCategoria == null) {
+      throw new BusinessRulesException("Informe uma Categoria");
+    }
+
+    if (categoriaService.findById(codigoCategoria).isEmpty()) {
+      throw new BusinessRulesException(String.format("A Categoria com código %s não existe no cadastro",
+          codigoCategoria));
+    }
+  }
+
+  private void validateDuplicateProduct(Produto produto) {
+    if(produtoRepository.findByCategoriaCodigoAndDescricao(produto.getCategoria().getCodigo(),
+        produto.getDescricao()).isPresent()
+    ) {
+      throw new BusinessRulesException(String.format("O Produto %s já existe no cadastro", produto.getDescricao().toUpperCase()));
+    }
+  }
 }

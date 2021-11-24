@@ -1,7 +1,7 @@
 package com.gvendas.gestaogvendas.services;
 
 import com.gvendas.gestaogvendas.entities.Categoria;
-import com.gvendas.gestaogvendas.exceptions.DuplicateCategoryException;
+import com.gvendas.gestaogvendas.exceptions.BusinessRulesException;
 import com.gvendas.gestaogvendas.repositories.CategoriaRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -56,7 +56,7 @@ public class CategoriaService {
     Categoria categoriaFind = categoriaRepository.findByNome(categoria.getNome());
 
     if(categoriaFind != null && !Objects.equals(categoriaFind.getCodigo(), categoria.getCodigo())) {
-      throw new DuplicateCategoryException(String.format("A categoria %s já existe", categoria.getNome().toUpperCase()));
+      throw new BusinessRulesException(String.format("A categoria %s já existe", categoria.getNome().toUpperCase()));
     }
   }
 }

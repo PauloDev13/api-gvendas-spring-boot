@@ -42,9 +42,9 @@ public class GestaoVendasExceptionHandler extends ResponseEntityExceptionHandler
 
   }
 
-  @ExceptionHandler(DuplicateCategoryException.class)
+  @ExceptionHandler(BusinessRulesException.class)
   public ResponseEntity<Object> handleDuplicateCategoryException(
-      DuplicateCategoryException ex, WebRequest request) {
+      BusinessRulesException ex, WebRequest request) {
     String userMessage = ex.getMessage();
     String developerMessage = ex.getMessage();
     List<ErrorHandler> errors = List.of(new ErrorHandler(userMessage, developerMessage));
