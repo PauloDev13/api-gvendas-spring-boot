@@ -1,12 +1,14 @@
 package com.gvendas.gestaogvendas.services;
 
 import com.gvendas.gestaogvendas.entities.Categoria;
+import com.gvendas.gestaogvendas.exceptions.DuplicateCategoryException;
 import com.gvendas.gestaogvendas.repositories.CategoriaRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -26,11 +28,13 @@ public class CategoriaService {
   }
 
   public Categoria save(Categoria categoria) {
+    ValidateDuplicateCategory(categoria);
     return categoriaRepository.save(categoria);
   }
 
   public Categoria update(Long codigo, Categoria categoria) {
-    Categoria categoriaSaved = validCategoria(codigo);
+    Categoria categoriaSaved = validateCategory(codigo);
+    ValidateDuplicateCategory(categoria);
     BeanUtils.copyProperties(categoria, categoriaSaved, "codigo");
     return categoriaRepository.save(categoriaSaved);
   }
@@ -39,12 +43,20 @@ public class CategoriaService {
     categoriaRepository.deleteById(codigo);
   }
 
-  private Categoria validCategoria(Long id) {
+  private Categoria validateCategory(Long id) {
     Optional<Categoria> categoria = findById(id);
 
     if (categoria.isEmpty()) {
       throw new EmptyResultDataAccessException(1);
     }
     return categoria.get();
+  }
+
+  private void ValidateDuplicateCategory(Categoria categoria) {
+    Categoria categoriaFind = categoriaRepository.findByNome(categoria.getNome());
+
+    if(categoriaFind != null && !Objects.equals(categoriaFind.getCodigo(), categoria.getCodigo())) {
+      throw new DuplicateCategoryException(String.format("A categoria %s já existe", categoria.getNome().toUpperCase()));
+    }
   }
 }

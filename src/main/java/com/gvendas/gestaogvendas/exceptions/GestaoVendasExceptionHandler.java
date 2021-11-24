@@ -37,7 +37,17 @@ public class GestaoVendasExceptionHandler extends ResponseEntityExceptionHandler
     String userMessage = "Recurso não encontrado";
     String developerMessage = ex.toString();
     List<ErrorHandler> errors = List.of(new ErrorHandler(userMessage, developerMessage));
-    return handleExceptionInternal(ex, errors, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    return handleExceptionInternal(ex, errors, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+
+  }
+
+  @ExceptionHandler(DuplicateCategoryException.class)
+  public ResponseEntity<Object> handleDuplicateCategoryException(
+      DuplicateCategoryException ex, WebRequest request) {
+    String userMessage = ex.getMessage();
+    String developerMessage = ex.getMessage();
+    List<ErrorHandler> errors = List.of(new ErrorHandler(userMessage, developerMessage));
+    return handleExceptionInternal(ex, errors, new HttpHeaders(), HttpStatus.CONFLICT, request);
 
   }
 
