@@ -32,7 +32,7 @@ public class ProdutoController {
   }
 
   @ApiOperation(
-      value = "Busca um único registro de produto pelo seu código e o código da sua Categoria",
+      value = "Busca um único registro de Produto pelo seu código e o código da sua Categoria",
       nickname = "produtoPorCodigo"
   )
   @GetMapping("/{codigo}")
@@ -46,12 +46,19 @@ public class ProdutoController {
   public ResponseEntity<Produto> save(@Valid @RequestBody() Produto produto) {
     return ResponseEntity.status(HttpStatus.CREATED).body(produtoService.save(produto));
   }
-//
-//  @ApiOperation(value = "Atualiza um único registro de categoria fornecido seu código")
-//  @PutMapping("/{codigo}")
-//  public ResponseEntity<Categoria> update(@PathVariable Long codigo, @Valid @RequestBody Categoria categoria) {
-//    return ResponseEntity.ok(categoriaService.update(codigo, categoria));
-//  }
+
+  @ApiOperation(
+      value = "Atualiza um único registro de Produto fornecido seu código e o código da sua Categoria",
+      nickname = "atualizarCategoria"
+  )
+  @PutMapping("/{codigoProduto}")
+  public ResponseEntity<Produto> update(
+      @PathVariable Long codigoCategoria,
+      @PathVariable Long codigoProduto,
+      @Valid @RequestBody Produto produto
+  ) {
+    return ResponseEntity.ok(produtoService.update(codigoCategoria, codigoProduto, produto));
+  }
 //
 //  @ApiOperation(value = "Exclui um único registro de categoria fornecido seu código")
 //  @DeleteMapping("/{codigo}")

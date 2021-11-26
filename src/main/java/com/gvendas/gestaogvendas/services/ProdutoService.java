@@ -3,9 +3,12 @@ package com.gvendas.gestaogvendas.services;
 import com.gvendas.gestaogvendas.entities.Produto;
 import com.gvendas.gestaogvendas.exceptions.BusinessRulesException;
 import com.gvendas.gestaogvendas.repositories.ProdutoRepository;
+import org.springframework.beans.BeanUtils;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -31,14 +34,24 @@ public class ProdutoService {
     validateDuplicateProduct(produto);
     return produtoRepository.save(produto);
   }
-//
-//  public Produto update(Long codigo, Produto categoria) {
-//    Produto categoriaSaved = validateCategory(codigo);
-//    ValidateDuplicateCategory(categoria);
-//    BeanUtils.copyProperties(categoria, categoriaSaved, "codigo");
-//    return categoriaRepository.save(categoriaSaved);
-//  }
-//
+
+  public Produto update(Long codigoCategoria, Long codigoProduto, Produto produto) {
+    Produto produtoSaved = validateIfProductExist(codigoProduto, codigoCategoria);
+    validateIfCategoryExists(codigoCategoria);
+    validateDuplicateProduct(produto);
+    BeanUtils.copyProperties(produto, produtoSaved, "codigo");
+    return produtoRepository.save(produtoSaved);
+  }
+
+  private Produto validateIfProductExist(Long codigoProduto, Long codigoCategoria) {
+    Optional<Produto> produto = findProductById(codigoProduto, codigoCategoria);
+    if(produto.isEmpty()) {
+      throw new EmptyResultDataAccessException(1);
+    }
+    return produto.get();
+  }
+
+  //
 //  public void delete(Long codigo) {
 //    categoriaRepository.deleteById(codigo);
 //  }
@@ -55,9 +68,9 @@ public class ProdutoService {
   }
 
   private void validateDuplicateProduct(Produto produto) {
-    if(produtoRepository.findByCategoriaCodigoAndDescricao(produto.getCategoria().getCodigo(),
-        produto.getDescricao()).isPresent()
-    ) {
+    Optional<Produto> produtoFind = produtoRepository.findByCategoriaCodigoAndDescricao(produto.getCategoria().getCodigo(),
+        produto.getDescricao());
+    if(produtoFind.isPresent() && !Objects.equals(produtoFind.get().getCodigo(), produto.getCodigo())) {
       throw new BusinessRulesException(String.format("O Produto %s já existe no cadastro", produto.getDescricao().toUpperCase()));
     }
   }
