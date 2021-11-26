@@ -29,8 +29,8 @@ public class ProdutoService {
     return produtoRepository.findByCodigo(codigo, codigoCategoria);
   }
 
-  public Produto save(Produto produto) {
-    validateIfCategoryExists(produto.getCategoria().getCodigo());
+  public Produto save(Long codigoCategoria, Produto produto) {
+    validateIfCategoryExists(codigoCategoria);
     validateDuplicateProduct(produto);
     return produtoRepository.save(produto);
   }
@@ -43,35 +43,45 @@ public class ProdutoService {
     return produtoRepository.save(produtoSaved);
   }
 
+  public void delete(Long codigo, Long codigoCategoria) {
+    validateIfProductExist(codigo, codigoCategoria);
+    produtoRepository.deleteById(codigo);
+  }
+
+  // Métodos auxiliares
   private Produto validateIfProductExist(Long codigoProduto, Long codigoCategoria) {
     Optional<Produto> produto = findProductById(codigoProduto, codigoCategoria);
+
     if(produto.isEmpty()) {
       throw new EmptyResultDataAccessException(1);
     }
     return produto.get();
   }
 
-  //
-//  public void delete(Long codigo) {
-//    categoriaRepository.deleteById(codigo);
-//  }
-//
   private void validateIfCategoryExists(Long codigoCategoria) {
     if (codigoCategoria == null) {
       throw new BusinessRulesException("Informe uma Categoria");
     }
 
     if (categoriaService.findById(codigoCategoria).isEmpty()) {
-      throw new BusinessRulesException(String.format("A Categoria com código %s não existe no cadastro",
-          codigoCategoria));
+      throw new BusinessRulesException(
+          String.format("A Categoria com código %s não existe no cadastro",
+              codigoCategoria)
+      );
     }
   }
 
   private void validateDuplicateProduct(Produto produto) {
-    Optional<Produto> produtoFind = produtoRepository.findByCategoriaCodigoAndDescricao(produto.getCategoria().getCodigo(),
-        produto.getDescricao());
+    Optional<Produto> produtoFind = produtoRepository.findByCategoriaCodigoAndDescricao(
+        produto.getCategoria().getCodigo(),
+        produto.getDescricao()
+    );
+
     if(produtoFind.isPresent() && !Objects.equals(produtoFind.get().getCodigo(), produto.getCodigo())) {
-      throw new BusinessRulesException(String.format("O Produto %s já existe no cadastro", produto.getDescricao().toUpperCase()));
+      throw new BusinessRulesException(
+          String.format("O Produto %s já existe no cadastro",
+              produto.getDescricao().toUpperCase())
+      );
     }
   }
 }

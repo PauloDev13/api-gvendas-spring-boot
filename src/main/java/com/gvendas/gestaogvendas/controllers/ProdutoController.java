@@ -35,16 +35,20 @@ public class ProdutoController {
       value = "Busca um único registro de Produto pelo seu código e o código da sua Categoria",
       nickname = "produtoPorCodigo"
   )
-  @GetMapping("/{codigo}")
-  public ResponseEntity<Optional<Produto>> findById(@PathVariable Long codigo, @PathVariable Long codigoCategoria) {
-    Optional<Produto> produto = produtoService.findProductById(codigo, codigoCategoria);
+  @GetMapping("/{codigoProduto}")
+  public ResponseEntity<Optional<Produto>> findById(
+      @PathVariable Long codigoProduto, @PathVariable Long codigoCategoria
+  ) {
+    Optional<Produto> produto = produtoService.findProductById(codigoProduto, codigoCategoria);
     return produto.isPresent() ? ResponseEntity.ok(produto) : ResponseEntity.notFound().build();
   }
 
   @ApiOperation(value = "Insere um registro de produto", nickname="salvaProduto")
   @PostMapping
-  public ResponseEntity<Produto> save(@Valid @RequestBody() Produto produto) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(produtoService.save(produto));
+  public ResponseEntity<Produto> save(
+      @PathVariable Long codigoCategoria, @Valid @RequestBody() Produto produto
+      ) {
+    return ResponseEntity.status(HttpStatus.CREATED).body(produtoService.save(codigoCategoria, produto));
   }
 
   @ApiOperation(
@@ -59,12 +63,11 @@ public class ProdutoController {
   ) {
     return ResponseEntity.ok(produtoService.update(codigoCategoria, codigoProduto, produto));
   }
-//
-//  @ApiOperation(value = "Exclui um único registro de categoria fornecido seu código")
-//  @DeleteMapping("/{codigo}")
-//  public ResponseEntity<Void> delete(@PathVariable Long codigo) {
-//    categoriaService.delete(codigo);
-//    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-//  }
 
+  @ApiOperation(value = "Exclui um único registro de Produto fornecido seu código", nickname = "excluiProduto")
+  @DeleteMapping("/{codigoProduto}")
+  public ResponseEntity<Void> delete(@PathVariable Long codigoProduto, @PathVariable Long codigoCategoria) {
+    produtoService.delete(codigoProduto, codigoCategoria);
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+  }
 }

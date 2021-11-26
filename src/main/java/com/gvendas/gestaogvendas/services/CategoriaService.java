@@ -40,9 +40,11 @@ public class CategoriaService {
   }
 
   public void delete(Long codigo) {
+    validateCategory(codigo);
     categoriaRepository.deleteById(codigo);
   }
 
+  // Métodos auxiliares
   private Categoria validateCategory(Long id) {
     Optional<Categoria> categoria = findById(id);
 
