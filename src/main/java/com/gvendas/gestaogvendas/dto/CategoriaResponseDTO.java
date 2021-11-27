@@ -17,7 +17,7 @@ public class CategoriaResponseDTO {
     this.nome = nome;
   }
 
-  public static CategoriaResponseDTO CategoryToDTO(Categoria categoria) {
+  public static CategoriaResponseDTO categoryToDTO(Categoria categoria) {
     return new CategoriaResponseDTO(categoria.getCodigo(), categoria.getNome());
   }
 

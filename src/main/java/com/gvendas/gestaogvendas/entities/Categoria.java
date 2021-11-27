@@ -16,12 +16,18 @@ public class Categoria {
   @Column(name = "nome")
   private String nome;
 
+  // Constructors
   public Categoria() {}
+
+  public Categoria(Long codigo) {
+    this.codigo = codigo;
+  }
 
   public Categoria(String nome) {
     this.nome = nome;
   }
 
+  // Getters and Setters
   public Long getCodigo() {
     return codigo;
   }

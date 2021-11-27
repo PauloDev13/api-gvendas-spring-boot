@@ -29,7 +29,7 @@ public class CategoriaController {
   @GetMapping
   public List<CategoriaResponseDTO> listAll() {
     return categoriaService.listAll().stream().map(
-        CategoriaResponseDTO::CategoryToDTO).collect(Collectors.toList());
+        CategoriaResponseDTO::categoryToDTO).collect(Collectors.toList());
   }
 
   @ApiOperation(value = "Busca um único registro de categoria fornecido seu código", nickname = "categoriaPorCodigo")
@@ -37,13 +37,14 @@ public class CategoriaController {
   public ResponseEntity<CategoriaResponseDTO> findById(@PathVariable Long codigo) {
     Optional<Categoria> categoria = categoriaService.findById(codigo);
     return categoria.map(value -> ResponseEntity.ok(
-        CategoriaResponseDTO.CategoryToDTO(value))).orElseGet(() -> ResponseEntity.notFound().build());
+        CategoriaResponseDTO.categoryToDTO(value))).orElseGet(() -> ResponseEntity.notFound().build());
   }
 
   @ApiOperation(value = "Insere um registro de categoria", nickname = "salvaCategoria")
   @PostMapping
-  public ResponseEntity<Categoria> save(@Valid @RequestBody() CategoriaRequestDTO categoriaDto) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(categoriaService.save(categoriaDto.DtoToCategory()));
+  public ResponseEntity<CategoriaResponseDTO> save(@Valid @RequestBody() CategoriaRequestDTO categoriaDto) {
+    Categoria categoriaSaved = categoriaService.save(categoriaDto.DtoToCategory());
+    return ResponseEntity.status(HttpStatus.CREATED).body(CategoriaResponseDTO.categoryToDTO(categoriaSaved));
   }
 
   @ApiOperation(
@@ -51,9 +52,12 @@ public class CategoriaController {
       nickname = "atualizaCategoria"
   )
   @PutMapping("/{codigo}")
-  public ResponseEntity<Categoria> update(@PathVariable Long codigo,
-                                          @Valid @RequestBody CategoriaRequestDTO categoriaDto) {
-    return ResponseEntity.ok(categoriaService.update(codigo, categoriaDto.DtoToCategory()));
+  public ResponseEntity<CategoriaResponseDTO> update(
+      @PathVariable Long codigo,
+      @Valid @RequestBody CategoriaRequestDTO categoriaDto
+  ) {
+    Categoria categoriaUpdated = categoriaService.update(codigo, categoriaDto.DtoToCategory());
+    return ResponseEntity.ok(CategoriaResponseDTO.categoryToDTO(categoriaUpdated));
   }
 
   @ApiOperation(value = "Exclui um único registro de categoria fornecido seu código", nickname = "excluiCategoria")
