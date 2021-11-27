@@ -1,5 +1,6 @@
 package com.gvendas.gestaogvendas.controllers;
 
+import com.gvendas.gestaogvendas.dto.CategoriaRequestDTO;
 import com.gvendas.gestaogvendas.dto.CategoriaResponseDTO;
 import com.gvendas.gestaogvendas.entities.Categoria;
 import com.gvendas.gestaogvendas.services.CategoriaService;
@@ -41,17 +42,18 @@ public class CategoriaController {
 
   @ApiOperation(value = "Insere um registro de categoria", nickname = "salvaCategoria")
   @PostMapping
-  public ResponseEntity<Categoria> save(@Valid @RequestBody() Categoria categoria) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(categoriaService.save(categoria));
+  public ResponseEntity<Categoria> save(@Valid @RequestBody() CategoriaRequestDTO categoriaDto) {
+    return ResponseEntity.status(HttpStatus.CREATED).body(categoriaService.save(categoriaDto.DtoToCategory()));
   }
 
   @ApiOperation(
-      value = "Atualiza um único registro de categoria fornecido seu código",
+      value = "Atualiza um único registro de Categoria fornecido seu código",
       nickname = "atualizaCategoria"
   )
   @PutMapping("/{codigo}")
-  public ResponseEntity<Categoria> update(@PathVariable Long codigo, @Valid @RequestBody Categoria categoria) {
-    return ResponseEntity.ok(categoriaService.update(codigo, categoria));
+  public ResponseEntity<Categoria> update(@PathVariable Long codigo,
+                                          @Valid @RequestBody CategoriaRequestDTO categoriaDto) {
+    return ResponseEntity.ok(categoriaService.update(codigo, categoriaDto.DtoToCategory()));
   }
 
   @ApiOperation(value = "Exclui um único registro de categoria fornecido seu código", nickname = "excluiCategoria")
