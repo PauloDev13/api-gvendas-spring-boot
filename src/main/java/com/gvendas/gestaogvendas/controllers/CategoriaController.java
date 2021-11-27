@@ -1,5 +1,6 @@
 package com.gvendas.gestaogvendas.controllers;
 
+import com.gvendas.gestaogvendas.dto.CategoriaResponseDTO;
 import com.gvendas.gestaogvendas.entities.Categoria;
 import com.gvendas.gestaogvendas.services.CategoriaService;
 import io.swagger.annotations.Api;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/categorias")
@@ -24,15 +26,17 @@ public class CategoriaController {
 
   @ApiOperation(value = "Lista todos os registros de categorias", nickname = "todasCategorias")
   @GetMapping
-  public List<Categoria> listAll() {
-    return categoriaService.listAll();
+  public List<CategoriaResponseDTO> listAll() {
+    return categoriaService.listAll().stream().map(
+        CategoriaResponseDTO::CategoryToDTO).collect(Collectors.toList());
   }
 
   @ApiOperation(value = "Busca um único registro de categoria fornecido seu código", nickname = "categoriaPorCodigo")
   @GetMapping("/{codigo}")
-  public ResponseEntity<Optional<Categoria>> findById(@PathVariable Long codigo) {
+  public ResponseEntity<CategoriaResponseDTO> findById(@PathVariable Long codigo) {
     Optional<Categoria> categoria = categoriaService.findById(codigo);
-    return categoria.isPresent() ? ResponseEntity.ok(categoria) : ResponseEntity.notFound().build();
+    return categoria.map(value -> ResponseEntity.ok(
+        CategoriaResponseDTO.CategoryToDTO(value))).orElseGet(() -> ResponseEntity.notFound().build());
   }
 
   @ApiOperation(value = "Insere um registro de categoria", nickname = "salvaCategoria")
@@ -50,7 +54,7 @@ public class CategoriaController {
     return ResponseEntity.ok(categoriaService.update(codigo, categoria));
   }
 
-  @ApiOperation(value = "Exclui um único registro de categoria fornecido seu código",nickname = "excluiCategoria")
+  @ApiOperation(value = "Exclui um único registro de categoria fornecido seu código", nickname = "excluiCategoria")
   @DeleteMapping("/{codigo}")
   public ResponseEntity<Void> delete(@PathVariable Long codigo) {
     categoriaService.delete(codigo);
