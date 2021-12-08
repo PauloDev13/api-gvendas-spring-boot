@@ -48,11 +48,7 @@ public class ProdutoResponseDTO {
         produto.getPrecoCusto(),
         produto.getPrecoVenda(),
         produto.getObservacao(),
-<<<<<<< HEAD
         CategoriaResponseDTO.categoryToDTO(produto.getCategoria())
-=======
-        CategoriaResponseDTO.CategoryToDTO(produto.getCategoria())
->>>>>>> origin/master
     );
   }
 
