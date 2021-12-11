@@ -1,6 +1,10 @@
 package com.gvendas.gestaogvendas.controllers;
 
+//import com.gvendas.gestaogvendas.dto.ClienteResponseMapper;
+
+import com.gvendas.gestaogvendas.dto.ClienteResponseDTO;
 import com.gvendas.gestaogvendas.entities.Cliente;
+import com.gvendas.gestaogvendas.mappers.ClienteResponseMapper;
 import com.gvendas.gestaogvendas.services.ClienteService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/clientes")
@@ -20,17 +25,21 @@ import java.util.Optional;
 @Api(tags = "Cliente")
 public class ClienteController {
   private final ClienteService clienteService;
+  private final ClienteResponseMapper clienteMapper;
 
   @ApiOperation(value = "Lista todos os registros de Cliente", nickname = "todosClientes")
   @GetMapping
-  public ResponseEntity<List<Cliente>> listAll() {
-    return ResponseEntity.ok(clienteService.listAll());
+  public ResponseEntity<List<ClienteResponseDTO>> listAll() {
+    List<Cliente> clientesDTO = clienteService.listAll();
+    return ResponseEntity.ok(clienteService.listAll().stream()
+        .map(clienteMapper::toDTO).collect(Collectors.toList()));
   }
 
   @ApiOperation(value = "Busca um único registro de Cliente fornecido seu código", nickname = "clientePorCodigo")
   @GetMapping("/{codigo}")
-  public ResponseEntity<Optional<Cliente>> findByCodigo(@PathVariable Long codigo) {
+  public ResponseEntity<ClienteResponseDTO> findByCodigo(@PathVariable Long codigo) {
     Optional<Cliente> cliente = clienteService.findByCodigo(codigo);
-    return cliente.isPresent() ? ResponseEntity.ok(cliente) : ResponseEntity.notFound().build();
+    return cliente.map(value -> ResponseEntity.ok(clienteMapper.toDTO(value)))
+        .orElseGet(() -> ResponseEntity.notFound().build());
   }
 }

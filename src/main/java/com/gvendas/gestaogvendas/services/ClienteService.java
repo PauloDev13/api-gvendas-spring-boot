@@ -2,6 +2,7 @@ package com.gvendas.gestaogvendas.services;
 
 import com.gvendas.gestaogvendas.entities.Cliente;
 import com.gvendas.gestaogvendas.repositories.ClienteRepository;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

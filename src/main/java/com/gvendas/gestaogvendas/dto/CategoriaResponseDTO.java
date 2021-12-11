@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel("Categoria Response DTO")
 public class CategoriaResponseDTO {
+
   @ApiModelProperty(value="Código")
   private Long codigo;
 

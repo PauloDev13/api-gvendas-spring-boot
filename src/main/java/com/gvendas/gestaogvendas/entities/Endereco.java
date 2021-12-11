@@ -7,8 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.util.Objects;
 
-@Getter
-@Setter
+@Getter @Setter
 @Embeddable
 public class Endereco {
   @Column(name = "logradouro", length = 30)
