@@ -28,8 +28,8 @@ public class CategoriaController {
   @ApiOperation(value = "Lista todos os registros de categorias", nickname = "todasCategorias")
   @GetMapping
   public List<CategoriaResponseDTO> listAll() {
-    return categoriaService.listAll().stream().map(
-        CategoriaResponseDTO::categoryToDTO).collect(Collectors.toList());
+    return categoriaService.listAll().stream()
+        .map(CategoriaResponseDTO::categoryToDTO).collect(Collectors.toList());
   }
 
   @ApiOperation(value = "Busca um único registro de categoria fornecido seu código", nickname = "categoriaPorCodigo")

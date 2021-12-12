@@ -40,7 +40,7 @@ public class ProdutoResponseDTO {
     this.categoriaDto = categoriaDto;
   }
 
-  public static ProdutoResponseDTO ProductToDTO(Produto produto) {
+  public static ProdutoResponseDTO productToDTO(Produto produto) {
     return new ProdutoResponseDTO(
         produto.getCodigo(),
         produto.getDescricao(),
