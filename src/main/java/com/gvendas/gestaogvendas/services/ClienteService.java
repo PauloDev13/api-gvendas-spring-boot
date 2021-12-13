@@ -1,13 +1,11 @@
 package com.gvendas.gestaogvendas.services;
 
-import com.gvendas.gestaogvendas.entities.Categoria;
 import com.gvendas.gestaogvendas.entities.Cliente;
 import com.gvendas.gestaogvendas.exceptions.BusinessRulesException;
+import com.gvendas.gestaogvendas.exceptions.ClienteNotFoundException;
 import com.gvendas.gestaogvendas.repositories.ClienteRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,7 +22,12 @@ public class ClienteService {
   }
 
   public Optional<Cliente> findByCodigo(Long codigo) {
-    return clienteRepository.findById(codigo);
+    Optional<Cliente> clienteFound = clienteRepository.findById(codigo);
+
+    if (clienteFound.isEmpty()) {
+      throw new ClienteNotFoundException(String.format("Cliente com Código %s não existe", codigo));
+    }
+    return clienteFound;
   }
 
   public Cliente save(Cliente cliente) {
@@ -40,10 +43,16 @@ public class ClienteService {
 
   }
 
+  public void delete(Long codigo) {
+    findByCodigo(codigo);
+    clienteRepository.deleteById(codigo);
+  }
+
   private Cliente validateClientExist(Long codigo) {
-    Optional<Cliente> cliente = findByCodigo(codigo);
+    Optional<Cliente> cliente = clienteRepository.findById(codigo);
+
     if (cliente.isEmpty()) {
-      throw new EmptyResultDataAccessException(1);
+      throw new ClienteNotFoundException(String.format("Cliente com Código %s não existe", codigo));
     }
     return cliente.get();
   }

@@ -1,7 +1,4 @@
 package com.gvendas.gestaogvendas.controllers;
-
-//import com.gvendas.gestaogvendas.dto.ClienteResponseMapper;
-
 import com.gvendas.gestaogvendas.dto.ClienteRequestDTO;
 import com.gvendas.gestaogvendas.dto.ClienteResponseDTO;
 import com.gvendas.gestaogvendas.entities.Cliente;
@@ -62,5 +59,12 @@ public class ClienteController {
 
     Cliente clienteUpdated = clienteService.update(clienteRequestMapper.fromDTO(clienteDTO), codigo);
     return ResponseEntity.ok(clienteResponseMapper.toDTO(clienteUpdated));
+  }
+
+  @ApiOperation(value = "Exclui um único registro de Cliente fornecido seu código", nickname = "excluiCliente")
+  @DeleteMapping("/{codigo}")
+  public ResponseEntity<Void> delete(@PathVariable Long codigo) {
+    clienteService.delete(codigo);
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 }
