@@ -14,7 +14,7 @@ import java.io.Serializable;
 public class ClienteResponseDTO implements Serializable {
 
   @ApiModelProperty(value = "Código")
-  private Long id;
+  private Long codigo;
 
   @ApiModelProperty(value = "Nome")
   private String nome;

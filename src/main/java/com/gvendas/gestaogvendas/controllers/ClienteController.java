@@ -52,5 +52,15 @@ public class ClienteController {
     return ResponseEntity.status(HttpStatus.CREATED).body(clienteResponseMapper.toDTO(clienteSaved));
   }
 
+  @ApiOperation(
+      value = "Atualiza um único registro de Cliente fornecido seu código",
+      nickname = "atualizaCliente"
+  )
+  @PutMapping("/{codigo}")
+  public ResponseEntity<ClienteResponseDTO> update (
+     @PathVariable Long codigo,  @Valid @RequestBody ClienteRequestDTO clienteDTO) {
 
+    Cliente clienteUpdated = clienteService.update(clienteRequestMapper.fromDTO(clienteDTO), codigo);
+    return ResponseEntity.ok(clienteResponseMapper.toDTO(clienteUpdated));
+  }
 }

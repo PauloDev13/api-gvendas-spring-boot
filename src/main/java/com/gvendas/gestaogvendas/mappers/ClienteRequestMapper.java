@@ -9,7 +9,7 @@ public interface ClienteRequestMapper {
 
   ClienteRequestDTO totDTO(Cliente cliente);
 
-  @Mapping(target = "id", ignore = true)
+  @Mapping(target = "codigo", ignore = true)
   Cliente fromDTO(ClienteRequestDTO clienteRequestDTO);
 
 //  @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
