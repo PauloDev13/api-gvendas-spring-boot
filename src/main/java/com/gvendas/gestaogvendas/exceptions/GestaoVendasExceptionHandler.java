@@ -1,5 +1,6 @@
 package com.gvendas.gestaogvendas.exceptions;
 
+import javassist.NotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
@@ -50,16 +51,6 @@ public class GestaoVendasExceptionHandler extends ResponseEntityExceptionHandler
     String developerMessage = ex.getMessage();
     List<ErrorHandler> errors = List.of(new ErrorHandler(userMessage, developerMessage));
     return handleExceptionInternal(ex, errors, new HttpHeaders(), HttpStatus.CONFLICT, request);
-
-  }
-
-  @ExceptionHandler(ClienteNotFoundException.class)
-  public ResponseEntity<Object> handleClienteNotFoundException(
-      ClienteNotFoundException ex, WebRequest request) {
-    String userMessage = ex.getMessage();
-    String developerMessage = ex.getMessage();
-    List<ErrorHandler> errors = List.of(new ErrorHandler(userMessage, developerMessage));
-    return handleExceptionInternal(ex, errors, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
 
   }
 
