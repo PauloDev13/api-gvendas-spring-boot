@@ -2,7 +2,6 @@ package com.gvendas.gestaogvendas.services;
 
 import com.gvendas.gestaogvendas.entities.Cliente;
 import com.gvendas.gestaogvendas.exceptions.BusinessRulesException;
-import com.gvendas.gestaogvendas.exceptions.ClienteNotFoundException;
 import com.gvendas.gestaogvendas.repositories.ClienteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -22,12 +21,7 @@ public class ClienteService {
   }
 
   public Optional<Cliente> findByCodigo(Long codigo) {
-    Optional<Cliente> clienteFound = clienteRepository.findById(codigo);
-
-    if (clienteFound.isEmpty()) {
-      throw new ClienteNotFoundException(String.format("Cliente com Código %s não existe", codigo));
-    }
-    return clienteFound;
+    return clienteRepository.findById(codigo);
   }
 
   public Cliente save(Cliente cliente) {
@@ -44,7 +38,6 @@ public class ClienteService {
   }
 
   public void delete(Long codigo) {
-    findByCodigo(codigo);
     clienteRepository.deleteById(codigo);
   }
 
@@ -52,7 +45,7 @@ public class ClienteService {
     Optional<Cliente> cliente = clienteRepository.findById(codigo);
 
     if (cliente.isEmpty()) {
-      throw new ClienteNotFoundException(String.format("Cliente com Código %s não existe", codigo));
+      throw new BusinessRulesException(String.format("Cliente com Código %s não existe", codigo));
     }
     return cliente.get();
   }
