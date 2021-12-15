@@ -53,16 +53,6 @@ public class GestaoVendasExceptionHandler extends ResponseEntityExceptionHandler
 
   }
 
-  @ExceptionHandler(ClienteNotFoundException.class)
-  public ResponseEntity<Object> handleClienteNotFoundException(
-      ClienteNotFoundException ex, WebRequest request) {
-    String userMessage = ex.getMessage();
-    String developerMessage = ex.getMessage();
-    List<ErrorHandler> errors = List.of(new ErrorHandler(userMessage, developerMessage));
-    return handleExceptionInternal(ex, errors, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
-
-  }
-
   @ExceptionHandler(DataIntegrityViolationException.class)
   public ResponseEntity<Object> handleDataIntegrityViolationException(
       DataIntegrityViolationException ex, WebRequest request) {
