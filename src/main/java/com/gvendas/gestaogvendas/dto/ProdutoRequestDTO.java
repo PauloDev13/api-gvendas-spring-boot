@@ -33,7 +33,6 @@ public class ProdutoRequestDTO {
   @Length(max = 500, message = "Observação")
   private String observacao;
 
-
   // Constructors
   public Produto DtoToProduct(Long codigo) {
     return new Produto(
