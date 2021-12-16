@@ -19,5 +19,5 @@ public class VendaRequestDTO {
   private LocalDate data;
 
   @ApiModelProperty(value="Itens da venda")
-  private List<ItemVendaRequestDTO> itemVendaDto;
+  private List<ItemVendaRequestDTO> itensVendaDto;
 }

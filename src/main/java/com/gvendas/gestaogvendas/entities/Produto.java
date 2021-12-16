@@ -33,6 +33,7 @@ public class Produto {
   // Constructors
   public Produto() {
   }
+
   public Produto(String descricao, Integer quantidade, BigDecimal precoCusto,
                  BigDecimal precoVenda, String observacao, Categoria categoria) {
     this.descricao = descricao;
@@ -52,6 +53,9 @@ public class Produto {
     this.precoVenda = precoVenda;
     this.observacao = observacao;
     this.categoria = categoria;
+  }
+  public Produto(Long codigo) {
+    this.codigo = codigo;
   }
 
   // Getters and Setters

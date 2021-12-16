@@ -58,6 +58,15 @@ public class ProdutoService {
     return produto.get();
   }
 
+  protected void validateIfProductExist(Long codigoProduto) {
+    Optional<Produto> produto = produtoRepository.findById(codigoProduto);
+
+    if(produto.isEmpty()) {
+      throw new BusinessRulesException(String.format("Produto para o Código %s não cadastrado!", codigoProduto));
+    }
+    // return produto.get();
+  }
+
   private void validateIfCategoryExists(Long codigoCategoria) {
     if (codigoCategoria == null) {
       throw new BusinessRulesException("Informe uma Categoria");
