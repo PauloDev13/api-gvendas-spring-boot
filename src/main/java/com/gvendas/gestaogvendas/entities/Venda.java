@@ -1,8 +1,6 @@
 package com.gvendas.gestaogvendas.entities;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -17,7 +15,7 @@ public class Venda {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "codigo", nullable = false)
-  private Long id;
+  private Long codigo;
 
   @Column(name = "data", nullable = false)
   private LocalDate data;
@@ -31,11 +29,11 @@ public class Venda {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     Venda venda = (Venda) o;
-    return Objects.equals(id, venda.id);
+    return Objects.equals(codigo, venda.codigo);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id);
+    return Objects.hash(codigo);
   }
 }

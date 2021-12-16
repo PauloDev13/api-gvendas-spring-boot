@@ -1,4 +1,4 @@
-package com.gvendas.gestaogvendas.dto;
+package com.gvendas.gestaogvendas.dtos.produto;
 
 import com.gvendas.gestaogvendas.entities.Categoria;
 import com.gvendas.gestaogvendas.entities.Produto;

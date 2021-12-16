@@ -1,5 +1,6 @@
-package com.gvendas.gestaogvendas.dto;
+package com.gvendas.gestaogvendas.dtos.cliente;
 
+import com.gvendas.gestaogvendas.dtos.cliente.EnderecoResponseDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;

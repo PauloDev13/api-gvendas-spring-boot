@@ -1,6 +1,6 @@
 package com.gvendas.gestaogvendas.mappers;
 
-import com.gvendas.gestaogvendas.dto.ClienteResponseDTO;
+import com.gvendas.gestaogvendas.dtos.cliente.ClienteResponseDTO;
 import com.gvendas.gestaogvendas.entities.Cliente;
 import org.mapstruct.Mapper;
 

@@ -1,5 +1,6 @@
-package com.gvendas.gestaogvendas.dto;
+package com.gvendas.gestaogvendas.dtos.produto;
 
+import com.gvendas.gestaogvendas.dtos.categoria.CategoriaResponseDTO;
 import com.gvendas.gestaogvendas.entities.Produto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

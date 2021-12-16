@@ -1,7 +1,7 @@
 package com.gvendas.gestaogvendas.controllers;
 
-import com.gvendas.gestaogvendas.dto.ProdutoRequestDTO;
-import com.gvendas.gestaogvendas.dto.ProdutoResponseDTO;
+import com.gvendas.gestaogvendas.dtos.produto.ProdutoRequestDTO;
+import com.gvendas.gestaogvendas.dtos.produto.ProdutoResponseDTO;
 import com.gvendas.gestaogvendas.entities.Produto;
 import com.gvendas.gestaogvendas.services.ProdutoService;
 import io.swagger.annotations.Api;

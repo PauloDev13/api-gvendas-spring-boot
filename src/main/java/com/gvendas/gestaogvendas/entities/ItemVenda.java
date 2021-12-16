@@ -16,7 +16,7 @@ public class ItemVenda {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "codigo", nullable = false)
-  private Long id;
+  private Long codigo;
 
   @Column(name = "quantidade", nullable = false)
   private Integer quantidade;
@@ -26,22 +26,22 @@ public class ItemVenda {
 
   @ManyToOne(optional = false)
   @JoinColumn(name = "codigo_produto", referencedColumnName = "codigo")
-  private Produto codigoProduto;
+  private Produto produto;
 
   @ManyToOne(optional = false)
   @JoinColumn(name = "codigo_venda", referencedColumnName = "codigo")
-  private Venda codigoVenda;
+  private Venda venda;
 
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     ItemVenda itemVenda = (ItemVenda) o;
-    return id.equals(itemVenda.id);
+    return codigo.equals(itemVenda.codigo);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id);
+    return Objects.hash(codigo);
   }
 }

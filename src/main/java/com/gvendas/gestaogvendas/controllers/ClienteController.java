@@ -1,6 +1,6 @@
 package com.gvendas.gestaogvendas.controllers;
-import com.gvendas.gestaogvendas.dto.ClienteRequestDTO;
-import com.gvendas.gestaogvendas.dto.ClienteResponseDTO;
+import com.gvendas.gestaogvendas.dtos.cliente.ClienteRequestDTO;
+import com.gvendas.gestaogvendas.dtos.cliente.ClienteResponseDTO;
 import com.gvendas.gestaogvendas.entities.Cliente;
 import com.gvendas.gestaogvendas.mappers.ClienteRequestMapper;
 import com.gvendas.gestaogvendas.mappers.ClienteResponseMapper;

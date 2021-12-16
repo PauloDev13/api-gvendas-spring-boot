@@ -24,7 +24,7 @@ public class ClienteService {
     Optional<Cliente> clienteFound = clienteRepository.findById(codigo);
 
     if (clienteFound.isEmpty()) {
-      throw new BusinessRulesException(String.format("Cliente com Código %s não existe", codigo));
+      throw new BusinessRulesException(String.format("Cliente com Código %s não cadastrado!", codigo));
     }
     return clienteFound;
   }
@@ -35,7 +35,9 @@ public class ClienteService {
   }
 
   public Cliente update(Cliente cliente, Long codigo) {
-    Cliente clienteUpdated = validateClientExist(codigo);
+    Cliente clienteUpdated = findByCodigo(codigo).get();
+// Cliente clienteUpdated = validateClientExist(codigo);
+
     validateDuplicateClient(clienteUpdated);
     BeanUtils.copyProperties(cliente, clienteUpdated, "codigo");
     return clienteRepository.save(clienteUpdated);
@@ -46,14 +48,17 @@ public class ClienteService {
     clienteRepository.deleteById(codigo);
   }
 
-  private Cliente validateClientExist(Long codigo) {
-    Optional<Cliente> cliente = clienteRepository.findById(codigo);
 
-    if (cliente.isEmpty()) {
-      throw new BusinessRulesException(String.format("Cliente com Código %s não existe", codigo));
-    }
-    return cliente.get();
-  }
+//---  private Cliente validateClientExist(Long codigo) {
+//    return clienteRepository.findById(codigo).get();
+
+//    Optional<Cliente> cliente = clienteRepository.findById(codigo);
+//
+//    if (cliente.isEmpty()) {
+//      throw new BusinessRulesException(String.format("Cliente com Código %s não existe", codigo));
+//    }
+//    return cliente.get();
+//  }
 
   private void validateDuplicateClient(Cliente cliente) {
     Cliente clienteFind = clienteRepository.findByNome(cliente.getNome());

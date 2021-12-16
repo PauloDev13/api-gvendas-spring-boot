@@ -1,4 +1,4 @@
-package com.gvendas.gestaogvendas.dto;
+package com.gvendas.gestaogvendas.dtos.cliente;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
