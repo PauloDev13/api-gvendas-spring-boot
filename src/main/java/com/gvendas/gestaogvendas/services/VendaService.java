@@ -1,5 +1,6 @@
 package com.gvendas.gestaogvendas.services;
 
+import com.gvendas.gestaogvendas.dtos.cliente.ClienteResponseDTO;
 import com.gvendas.gestaogvendas.dtos.venda.ClienteVendaResponseDTO;
 import com.gvendas.gestaogvendas.dtos.venda.ItemVendaResponseDTO;
 import com.gvendas.gestaogvendas.dtos.venda.VendaResponseDTO;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class VendaService {
+public class VendaService extends AbstractVendaService {
 
   private final ClienteService clienteService;
   private final VendaRepository vendaRepository;
@@ -26,17 +27,22 @@ public class VendaService {
 
   public ClienteVendaResponseDTO ListVendaByCliente(Long codigoCliente) {
     Cliente clienteValidate = validateClienteVendaExists(codigoCliente);
-    List<VendaResponseDTO> vendaResponseDtoList =
-        vendaRepository.findByClienteCodigo(codigoCliente).stream().map(this::criaVendaResponseDTO)
-        .collect(Collectors.toList());
+    List<VendaResponseDTO> vendaResponseDtoList = vendaRepository.findByClienteCodigo(codigoCliente).stream()
+            .map(venda -> criaVendaResponseDTO(venda, itemVendaRepository.findByVendaCodigo(venda.getCodigo())))
+            .collect(Collectors.toList());
+
     return new ClienteVendaResponseDTO(clienteValidate.getNome(), vendaResponseDtoList);
   }
 
   public ClienteVendaResponseDTO listVendaByCodigo(Long codigoVenda) {
     Venda vendaExist = validateVendaExist(codigoVenda);
-    return new ClienteVendaResponseDTO(vendaExist.getCliente().getNome(), List.of(criaVendaResponseDTO(vendaExist)));
+    List<ItemVenda> itensVendaList = itemVendaRepository.findByVendaCodigo(codigoVenda);
+
+    return new ClienteVendaResponseDTO(vendaExist.getCliente().getNome(),
+        List.of(criaVendaResponseDTO(vendaExist,itensVendaList)));
   }
 
+  //-- Métodos auxiliares
   private Venda validateVendaExist(Long codigoVenda) {
     Optional<Venda> venda = vendaRepository.findById(codigoVenda);
 
@@ -46,20 +52,8 @@ public class VendaService {
     return venda.get();
   }
 
-  //-- Métodos auxiliares
   private Cliente validateClienteVendaExists(Long codigoCliente) {
     Optional<Cliente> cliente = clienteService.findByCodigo(codigoCliente);
     return cliente.orElse(null);
-  }
-
-  private VendaResponseDTO criaVendaResponseDTO(Venda venda) {
-    List<ItemVendaResponseDTO> itemVendaResponseDTO = itemVendaRepository.findByVendaCodigo(venda.getCodigo())
-        .stream().map(this::criaItemVendaResponseDTO).collect(Collectors.toList());
-    return new VendaResponseDTO(venda.getCodigo(), venda.getData(), itemVendaResponseDTO);
-  }
-
-  private ItemVendaResponseDTO criaItemVendaResponseDTO(ItemVenda itemVenda) {
-    return new ItemVendaResponseDTO(itemVenda.getCodigo(), itemVenda.getQuantidade(), itemVenda.getPrecoVendido(),
-        itemVenda.getProduto().getCodigo(), itemVenda.getProduto().getDescricao());
   }
 }
