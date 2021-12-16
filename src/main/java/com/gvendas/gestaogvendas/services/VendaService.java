@@ -1,8 +1,6 @@
 package com.gvendas.gestaogvendas.services;
 
-import com.gvendas.gestaogvendas.dtos.cliente.ClienteResponseDTO;
 import com.gvendas.gestaogvendas.dtos.venda.ClienteVendaResponseDTO;
-import com.gvendas.gestaogvendas.dtos.venda.ItemVendaResponseDTO;
 import com.gvendas.gestaogvendas.dtos.venda.VendaResponseDTO;
 import com.gvendas.gestaogvendas.entities.Cliente;
 import com.gvendas.gestaogvendas.entities.ItemVenda;
